@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+
+# Vundle
+## Make bundle directory
+mkdir -p ${HOME}/.vim/bundle
+
+## Install or update vundle repo
+VUNDLE_DIR="${HOME}/.vim/bundle/vundle/"
+if [ -d "${VUNDLE_DIR}/.git" ]; then
+	CWD="$(pwd)"
+	cd "${VUNDLE_DIR}"
+	git pull origin master
+	cd "${CWD}"
+else
+	git clone https://github.com/gmarik/vundle.git "${VUNDLE_DIR}"
+fi
+
+## Install vundle plugins
+echo | echo | vim +PluginInstall! +qall &>/dev/null
+
+# Setup tmux
+## Install or update tpm repo
+mkdir -p ~/.tmux/plugins
+TPM_DIR="${HOME}/.tmux/plugins/tpm"
+if [ -d "${TPM_DIR}/.git" ]; then
+	CWD="$(pwd)"
+	cd "${TPM_DIR}"
+	git pull origin master
+	cd "${CWD}"
+	## start a server but don't attach to it
+	tmux start-server
+
+	## create a new session but don't attach to it either
+	tmux new-session -d
+
+	## update plugins
+	/usr/bin/env bash ${TPM_DIR}/scripts/update_plugin.sh
+else
+	git clone https://github.com/tmux-plugins/tpm "${TPM_DIR}"
+
+	## start a server but don't attach to it
+	tmux start-server
+
+	## create a new session but don't attach to it either
+	tmux new-session -d
+
+	## install the plugins
+	${TPM_DIR}/scripts/install_plugins.sh
+fi
