@@ -1,22 +1,4 @@
 # Are any updates needed?
-ORIGINAL_WD=$(pwd)
-cd ~/.vim
-if [ ! -f '~/.vim/no_update' ]; then
-	timeout 2 git remote update > /dev/null 2>&1
-	UPDATE_STATUS=$(git status -uno | grep -c -i 'behind\|different')
-	if [ "$UPDATE_STATUS" != "0" ]; then
-		read -p "Updates available, update now? " -n 1 -r
-		echo
-		if [[ $REPLY =~ ^[Yy]$ ]]; then
-			git reset --hard
-			git pull -f origin master
-			sh ~/.vim/setup.sh
-			echo "Updates complete."
-		fi
-	fi
-fi
-cd ${ORIGINAL_WD}
-
 TIME='\[\e[96m\]\@'
 WD='\[\e[91m\]\w'
 USR='\[\e[31m\]\u'
@@ -26,9 +8,6 @@ STINGER='\[\e[91m\]-->\[\e[0m\] '
 
 # Install auto completion
 source ~/.vim/completion/*
-alias t="bash ~/.vim/todo.sh -d ~/.vim/todo.cfg"
-alias vpu="bash ~/.vim/update.sh"
-complete -F _todo t
 
 export EDITOR="vim"
 export TZ="America/Los_Angeles"
