@@ -5,7 +5,7 @@ call vundle#rc()
 
 Plugin 'gmarik/vundle'
 Plugin 'scrooloose/nerdtree'
-Plugin 'ajh17/spacegray.vim'
+Plugin 'morhetz/gruvbox'
 Plugin 'nvie/vim-flake8'
 Plugin 'roxma/vim-paste-easy'
 Plugin 'klen/python-mode'
