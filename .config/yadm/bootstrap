@@ -31,3 +31,7 @@ sleep 1
 
 ## killing the server is not required, I guess
 tmux kill-server
+
+## bash profile
+rm ~/.bash_profile
+ln -s ~/.bashrc ~/.bash_profile
