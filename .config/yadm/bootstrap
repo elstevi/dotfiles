@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-
 # Vundle
 ## Make bundle directory
 mkdir -p ${HOME}/.vim/bundle ${HOME}/.vim/completion
@@ -19,31 +18,16 @@ fi
 echo | echo | vim +PluginInstall! +qall &>/dev/null
 
 # Setup tmux
-## Install or update tpm repo
-mkdir -p ~/.tmux/plugins
-TPM_DIR="${HOME}/.tmux/plugins/tpm"
-if [ -d "${TPM_DIR}/.git" ]; then
-	CWD="$(pwd)"
-	cd "${TPM_DIR}"
-	git pull origin master
-	cd "${CWD}"
-	## start a server but don't attach to it
-	tmux start-server
+## start a server but don't attach to it
+git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+tmux start-server
 
-	## create a new session but don't attach to it either
-	tmux new-session -d
+## create a new session but don't attach to it either
+tmux new-session -d
+sleep 1
 
-	## update plugins
-	/usr/bin/env bash ${TPM_DIR}/scripts/update_plugin.sh
-else
-	git clone https://github.com/tmux-plugins/tpm "${TPM_DIR}"
+## install the plugins
+~/.tmux/plugins/tpm/bin/install_plugins
 
-	## start a server but don't attach to it
-	tmux start-server
-
-	## create a new session but don't attach to it either
-	tmux new-session -d
-
-	## install the plugins
-	${TPM_DIR}/scripts/install_plugins.sh
-fi
+## killing the server is not required, I guess
+tmux kill-server
