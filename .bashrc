@@ -40,3 +40,68 @@ fi
 if [ "$(which pyenv)" ]; then
 	eval "$(pyenv virtualenv-init -)"
 fi
+
+# https://boreal.social/post/15-practical-bash-functions-i-use-in-my-bashrc
+# saw these on reddit, seemed useful
+mkcd() {
+    mkdir -p "$1" && cd "$1"
+}
+
+hist() {
+    history | grep -i "$1"
+}
+
+ff() {
+    find . -type f -iname "*$1*" 2>/dev/null
+}
+# ff .pdf    → finds all PDFs anywhere below current dir
+
+fd() {
+    find . -type d -iname "*$1*" 2>/dev/null
+}
+
+serve() {
+    local port=${1:-8000}
+    echo "Serving on http://localhost:$port"
+    python3 -m http.server "$port"
+}
+
+colors() {
+    for i in {0..255}; do
+        printf '\e[48;5;%dm%3d ' "$i" "$i"
+        (((i+3) % 18)) || printf '\e[0m\n'
+    done
+    printf '\e[0m\n'
+}
+
+path() {
+    echo "$PATH" | tr ":" "\n"
+}
+
+mans() {
+    man "$1" | grep -iC 5 "$2"
+}
+# Usage: mans tar extract  -> Shows 'tar' man page entries near 'extract'
+
+trash() {
+    mkdir -p ~/.local/share/Trash/files
+    mv "$@" ~/.local/share/Trash/files/
+    echo "Moved to ~/.local/share/Trash/files/"
+}
+
+ports() {
+    lsof -iTCP -sTCP:LISTEN -P -n
+}
+
+git-undo() {
+    git reset --soft HEAD~1
+}
+
+extract-ip() {
+    grep -oE "\b([0-9]{1,3}\.){3}[0-9]{1,3}\b" "$1" | sort -u
+}
+# Usage: extract-ip access.log
+
+top-size() {
+    du -hs * | sort -rh | head -10
+}
