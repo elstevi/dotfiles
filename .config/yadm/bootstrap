@@ -2,7 +2,7 @@
 
 # Vundle
 ## Make bundle directory
-mkdir -p ${HOME}/.vim/bundle
+mkdir -p ${HOME}/.vim/bundle ${HOME}/.vim/completion
 
 ## Install or update vundle repo
 VUNDLE_DIR="${HOME}/.vim/bundle/vundle/"

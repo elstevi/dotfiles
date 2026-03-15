@@ -7,7 +7,11 @@ HOST='\[\e[36m\]\h'
 STINGER='\[\e[91m\]-->\[\e[0m\] '
 
 # Install auto completion
-source ~/.vim/completion/*
+if [ -d "$HOME/.vim/completion" ]; then
+    for file in "$HOME/.vim/completion"/*; do
+        [ -e "$file" ] && source "$file"
+    done
+fi
 
 export EDITOR="vim"
 export TZ="America/Los_Angeles"
