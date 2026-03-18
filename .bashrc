@@ -13,6 +13,7 @@ if [ -d "$HOME/.vim/completion" ]; then
 fi
 
 export EDITOR="vim"
+export PAGER="less"
 export TZ="America/Los_Angeles"
 export PS1="${TIME} ${WD}\n${USR}${AT}${HOST}${STINGER}"
 export PROMPT_COMMAND=""
