@@ -58,7 +58,7 @@ if [[ "$(which yadm)" && ! -f ".yadm_no_autoupdate" && $- == *i* ]]; then
 			dialog --no-collapse --title "yadm updates pending, ready to install?" --yes-label Install --yesno "$(yadm show $(yadm branch --show-current)..origin/master)" 0 0
 		fi
 		if [ $? -eq 0 ]; then
-			yaup
+			yaup 2>&1 | dialog --title "yadm bootstrap progress" --progressbox -1 -1
 		else
 			echo "not doing anything"
 		fi
