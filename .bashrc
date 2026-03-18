@@ -41,6 +41,15 @@ if [ "$(which pyenv)" ]; then
 	eval "$(pyenv virtualenv-init -)"
 fi
 
+# Auto update logic for yadm
+if [[ "$(which yadm)" && ! -f ".yadm_no_autoupdate" ]]; then
+	OUTPUT="$(timeout 4 yadm remote show origin)"
+	if ! echo "${OUTPUT}" | grep 'up to date' > /dev/null; then
+		yadm pull -f origin master
+		yadm bootstrap
+	fi
+fi
+
 # https://boreal.social/post/15-practical-bash-functions-i-use-in-my-bashrc
 # saw these on reddit, seemed useful
 mkcd() {
