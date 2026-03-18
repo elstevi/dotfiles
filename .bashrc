@@ -44,8 +44,14 @@ fi
 
 # Auto update logic for yadm
 yaup() {
+	yadm fetch origin
+	CHANGES=$(yadm diff --name-only $(yadm branch --show-current)..origin/master)
 	yadm pull -f origin master
-	yadm bootstrap
+	if echo "${CHANGES}" | grep 'vimrc\|tmux.conf'; then
+		yadm bootstrap
+	else
+		echo no bootstrap necessary
+	fi
 }
 
 if [[ "$(which yadm)" && ! -f ".yadm_no_autoupdate" && $- == *i* ]]; then
