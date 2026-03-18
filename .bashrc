@@ -52,7 +52,11 @@ if [[ "$(which yadm)" && ! -f ".yadm_no_autoupdate" && $- == *i* ]]; then
 	OUTPUT="$(timeout 4 yadm remote show origin)"
 	if ! echo "${OUTPUT}" | grep 'up to date' > /dev/null; then
 		yadm fetch origin
-		dialog --no-collapse --title "yadm updates pending, ready to install?" --yes-label Install --yesno "$(yadm show $(yadm branch --show-current)..origin/master)" 0 0
+		if [[ ! "$(which dialog)" ]]; then
+			echo "dialog not installed. you can manually update by running yaup"
+		else
+			dialog --no-collapse --title "yadm updates pending, ready to install?" --yes-label Install --yesno "$(yadm show $(yadm branch --show-current)..origin/master)" 0 0
+		fi
 		if [ $? -eq 0 ]; then
 			yaup
 		else
