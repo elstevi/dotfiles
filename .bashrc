@@ -43,13 +43,24 @@ if [ "$(which pyenv)" ]; then
 fi
 
 # Auto update logic for yadm
-if [[ "$(which yadm)" && ! -f ".yadm_no_autoupdate" ]]; then
+yaup() {
+	yadm pull -f origin master
+	yadm bootstrap
+}
+
+if [[ "$(which yadm)" && ! -f ".yadm_no_autoupdate" && $- == *i* ]]; then
 	OUTPUT="$(timeout 4 yadm remote show origin)"
-	if ! echo "${OUTPUT}" | grep 'up to date' > /dev/null; then
-		yadm pull -f origin master
-		yadm bootstrap
-	fi
+	# if ! echo "${OUTPUT}" | grep 'up to date' > /dev/null; then
+		yadm fetch origin
+		dialog --title "yadm update" --yesno "$(git log $(git branch --show-current) origin/master)" 6 20
+		if [ $? -eq 0 ]; then
+			yaup
+		else
+			echo "not doing anything"
+		fi
+	# fi
 fi
+
 
 # https://boreal.social/post/15-practical-bash-functions-i-use-in-my-bashrc
 # saw these on reddit, seemed useful
