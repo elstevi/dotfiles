@@ -3,7 +3,6 @@ WD='\[\e[91m\]\w'
 USR='\[\e[31m\]\u'
 AT='\[\e[0m\]@'
 HOST='\[\e[36m\]\h'
-STINGER='\[\e[91m\]-->\[\e[0m\] '
 
 # Install auto completion
 if [ -d "$HOME/.vim/completion" ]; then
@@ -16,11 +15,23 @@ if [ -f ~/.bash_vars ]; then
 	source ~/.bash_vars
 fi
 
+__build_prompt() {
+    local EXIT="$?"
+    if [ "$EXIT" -ne 0 ]; then
+        local STINGER="\[\e[31m\] rc:${EXIT} \[\e[91m\]-->\[\e[0m\] "
+    else
+	local STINGER="\[\e[91m\]-->\[\e[0m\] "
+    fi
+
+    LAST_HISTCMD="$HISTCMD"
+    PS1="${TIME} ${WD}\n${USR}${AT}${HOST}${STINGER}"
+}
+
+# Tell Bash to run this function every time it generates a prompt
+PROMPT_COMMAND=__build_prompt
 export EDITOR="vim"
 export PAGER="less"
 export TZ="America/Los_Angeles"
-export PS1="${TIME} ${WD}\n${USR}${AT}${HOST}${STINGER}"
-export PROMPT_COMMAND=""
 export PATH="${PATH}:/usr/local/bin:${HOME}/bin"
 
 if [ -f ~/.vim/bofh_enable ]; then
