@@ -1,2 +1,6 @@
 .ssh/id_*
+*key*
 .tmux/plugins/tpm
+.ssh/authorized_keys
+.ssh/known_hosts
+.ssh/known_hosts.old
