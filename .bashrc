@@ -50,6 +50,7 @@ if [ "$(uname)" == "Darwin" ]; then
 fi
 
 if [ "$(which pyenv)" ]; then
+	eval "$(pyenv init -)"
 	eval "$(pyenv virtualenv-init -)"
 fi
 
